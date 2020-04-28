@@ -5,6 +5,7 @@
 
 char *mystrcpy(char *stroriginal)
 {
+    int i;
     int n = 0;
     while (stroriginal[n])
     {
@@ -15,11 +16,13 @@ char *mystrcpy(char *stroriginal)
         n++;
     }
 
-    char *strcopia = malloc(n * sizeof(char));
-    for (int i = 0; i < n; i++)
+    char *strcopia = malloc((n + 1) * sizeof(char));
+    for (i = 0; stroriginal[i] != '\0'; i++)
     {
         strcopia[i] = stroriginal[i];
     }
+
+    strcopia[i] = '\0';
 
     return strcopia;
 }
