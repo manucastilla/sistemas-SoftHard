@@ -13,6 +13,7 @@ vec_int *vec_int_create()
 {
     vec_int *vec = malloc(sizeof(vec_int));
     vec->capacity = 2;
+    vec->data = malloc((vec->capacity) * sizeof(int));
     vec->size = 0;
     return vec;
 }
@@ -32,15 +33,56 @@ int vec_int_size(vec_int *v)
 
 int vec_int_at(vec_int *v, int pos, int *val)
 {
+    if (pos < v->size)
+    {
+        *val = v->data[pos];
+        return 1;
+    }
     return 0;
 }
 
 int vec_int_insert(vec_int *v, int pos, int val)
 {
-    return 0;
+    if (pos < 0 || pos > v->size)
+    {
+        return 0;
+    }
+
+    if (v->size == v->capacity)
+    {
+        v->capacity *= 2;
+        v->data = realloc(v->data, v->capacity * sizeof(int));
+    }
+
+    for (int i = v->size; i > pos; i--)
+    {
+        v->data[i] = v->data[i - 1];
+    }
+
+    v->data[pos] = val;
+    v->size++;
+    return 1;
 }
 
 int vec_int_remove(vec_int *v, int pos)
 {
-    return 0;
+    if (pos < 0 || pos >= v->size)
+    {
+        return 0;
+    }
+
+    if (v->size <= v->capacity / 4)
+    {
+        v->capacity /= 2;
+        v->data = realloc(v->data, v->capacity * sizeof(int));
+    }
+
+    for (int i = pos; i < v->size - 1; i++)
+    {
+        v->data[i] = v->data[i + 1];
+    }
+
+    v->size--;
+
+    return 1;
 }
